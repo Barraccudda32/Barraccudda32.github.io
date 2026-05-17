@@ -3,9 +3,44 @@
 <head>
   <meta charset="UTF-8">
   <title>Moje investice</title>
+  <style>
+    table {
+      border-collapse: collapse;
+      width: 100%;
+      margin-top: 20px;
+    }
+    th, td {
+      border: 1px solid #ccc;
+      padding: 8px;
+      text-align: left;
+    }
+    th {
+      background: #f0f0f0;
+    }
+  </style>
 </head>
 <body>
   <h1>Moje investice</h1>
-  <p>Data jsou v souboru Finance.csv.</p>
+  <div id="table"></div>
+
+  <script>
+    fetch('Finance.csv')
+      .then(response => response.text())
+      .then(data => {
+        const rows = data.trim().split('\n').map(r => r.split(','));
+        let html = '<table>';
+        rows.forEach((row, i) => {
+          html += '<tr>';
+          row.forEach(cell => {
+            html += i === 0 
+              ? `<th>${cell}</th>` 
+              : `<td>${cell}</td>`;
+          });
+          html += '</tr>';
+        });
+        html += '</table>';
+        document.getElementById('table').innerHTML = html;
+      });
+  </script>
 </body>
 </html>
